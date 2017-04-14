@@ -27,7 +27,7 @@ public class Address {
         }
         this.fullPath = fullPath;
         this.children = (Set<Post>) postRepository.getChildrenPostsByAddress(fullPath);
-        List<String> allSegments = Arrays.asList(fullPath.split("/"));
+        List<String> allSegments = new ArrayList<String>(Arrays.asList(fullPath.split("/")));
         lastSegment = allSegments.remove(allSegments.size() - 1);
         if (fullPath.indexOf("user:") == 0) {
             topLevelSegment = "user:";
@@ -36,7 +36,7 @@ public class Address {
             topLevelSegment = "";
             this.post = postRepository.getPostByAddress(fullPath);
         }
-        if (!allSegments.isEmpty()) {
+        if (allSegments.size() > 1) {
             String newFullPath = topLevelSegment + "/" + String.join("/", allSegments);
             Address directParent = new Address(newFullPath, postRepository);
             parents = new ArrayList<>();

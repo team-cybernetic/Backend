@@ -26,15 +26,18 @@ public abstract class Post {
     protected byte[] rawPostContent;
     //A timestamp of when the post was created
     protected long timestamp;
+    
+    protected String dateTime;
 
-    public Post(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp, PostRepository postRepository, UserRepository userRepository) {
+    public Post(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp, String dateTime, PostRepository postRepository, UserRepository userRepository) {
         this.title = title;
         this.address = new Address(path + "/" + title.toLowerCase().replace(" ", "-"), postRepository);
-        this.author = userRepository.getUserByUUID(authorUUID);
+        this.author = userRepository.getUserByUUID(authorUUID, postRepository);
         this.value = 0;
         this.byteSize = rawPostContent.length;
         this.rawPostContent = rawPostContent;
         this.timestamp = timestamp;
+        this.dateTime = dateTime;
     }
 
     public String getTitle() {
@@ -59,6 +62,10 @@ public abstract class Post {
 
     public long getTimestamp() {
         return timestamp;
+    }
+    
+    public String getDate() {
+        return dateTime;
     }
 
     public Set<Post> getSubposts() {

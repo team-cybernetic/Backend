@@ -9,8 +9,8 @@ import java.util.UUID;
 public class TextPost extends Post {
     private String textContent;
 
-    public TextPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp, PostRepository postRepository, UserRepository userRepository) {
-        super(title, path, authorUUID, rawPostContent, timestamp, postRepository, userRepository);
+    public TextPost(String title, String path, UUID authorUUID, String body, long timestamp, String dateTime, PostRepository postRepository, UserRepository userRepository) {
+        super(title, path, authorUUID, body.getBytes(), timestamp, dateTime, postRepository, userRepository);
         this.textContent = new String(rawPostContent, StandardCharsets.UTF_8);
     }
 

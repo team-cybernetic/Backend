@@ -22,8 +22,8 @@ public class UserPost extends Post {
     //The public key of the user (note this can only be set once)
     private String publicKey;
 
-    public UserPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp, PostRepository postRepository, UserRepository userRepository) {
-        super(title, path, authorUUID, rawPostContent, timestamp, postRepository, userRepository);
+    public UserPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp,String dateTime, PostRepository postRepository, UserRepository userRepository) {
+        super(title, path, authorUUID, rawPostContent, timestamp, dateTime, postRepository, userRepository);
         this.bio = "";
         this.name = "";
         this.avatarUrl = "";

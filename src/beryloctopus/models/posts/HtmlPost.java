@@ -9,8 +9,8 @@ import java.util.UUID;
 public class HtmlPost extends Post {
     private String htmlContent;
 
-    public HtmlPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp, PostRepository postRepository, UserRepository userRepository) {
-        super(title, path, authorUUID, rawPostContent, timestamp, postRepository, userRepository);
+    public HtmlPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp,String dateTime, PostRepository postRepository, UserRepository userRepository) {
+        super(title, path, authorUUID, rawPostContent, timestamp, dateTime, postRepository, userRepository);
         this.htmlContent = new String(rawPostContent, StandardCharsets.UTF_8);
     }
 

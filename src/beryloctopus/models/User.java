@@ -42,4 +42,8 @@ public class User {
             wallet = new Wallet(post.getPublicKey());
         }
     }
+    
+    public String getUsername() {
+        return name;
+    }
 }
