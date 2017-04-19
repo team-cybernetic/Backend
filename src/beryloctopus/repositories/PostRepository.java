@@ -18,8 +18,8 @@ public class PostRepository {
         return addressPostMap.get(fullPath);
     }
 
-    public void addPost(String title, Post post) {
-        addressPostMap.put(title, post);
+    public void addPost(String fullPath, Post post) {
+        addressPostMap.put(fullPath, post);
     }
 
     public Set<? extends Post> getChildrenPostsByAddress(String fullPath) {
