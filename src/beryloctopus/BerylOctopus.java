@@ -44,4 +44,6 @@ public interface BerylOctopus {
     public String[] getCurrentPathArray();
 
     public String getPathSeparator();
+
+    //public Post getPostByPath();
 }
