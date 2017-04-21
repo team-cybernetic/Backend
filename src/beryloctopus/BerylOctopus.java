@@ -29,13 +29,13 @@ public interface BerylOctopus {
      * @return Returns the new current path
      * @throws Exception TODO: make proper exceptions
      */
-    public String setCurrentPath(String newPath) throws Exception;
+    public Path setCurrentPath(String newPath) throws Exception;
 
     /**
      * Gets the current path location
      * @return The current path location
      */
-    public String getCurrentPath();
+    public Path getCurrentPath();
 
     /**
      * Returns the current path location as an array of subdirectories
@@ -44,4 +44,18 @@ public interface BerylOctopus {
     public String[] getCurrentPathArray();
 
     public String getPathSeparator();
+
+    /**
+     * Gets the post at the current Path
+     * @return The post
+     */
+    public Post getCurrentPost();
+
+    public Post getPostAt(String fullPath);
+
+    public Post createPost(Path path, String title, byte[] content, String contentType, User author);
+
+    public Post createPost(String fullPath, String title, byte[] content, String contentType, User author);
+
+    public void tipPost(Post post, long amount);
 }

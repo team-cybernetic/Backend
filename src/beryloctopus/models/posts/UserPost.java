@@ -1,10 +1,10 @@
 package beryloctopus.models.posts;
 
-import beryloctopus.models.Address;
+import beryloctopus.Ruleset;
+import beryloctopus.User;
 import beryloctopus.repositories.PostRepository;
 import beryloctopus.repositories.UserRepository;
 
-import java.util.UUID;
 
 /*
  * A type of post classified as 'User'
@@ -22,8 +22,8 @@ public class UserPost extends Post {
     //The public key of the user (note this can only be set once)
     private String publicKey;
 
-    public UserPost(String title, String path, UUID authorUUID, byte[] rawPostContent, long timestamp,String dateTime, PostRepository postRepository, UserRepository userRepository) {
-        super(title, path, authorUUID, rawPostContent, timestamp, dateTime, postRepository, userRepository);
+    public UserPost(String parentPath, String title, User author, byte[] rawPostContent, long timestamp, PostRepository postRepository, UserRepository userRepository) {
+        super(parentPath, title, author, rawPostContent, "bkc/user", timestamp, postRepository, userRepository);
         this.bio = "";
         this.name = "";
         this.avatarUrl = "";

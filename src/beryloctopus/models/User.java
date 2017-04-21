@@ -1,15 +1,14 @@
 package beryloctopus.models;
 
 import beryloctopus.models.posts.UserPost;
+import java.security.PublicKey;
 
 import java.util.List;
 import java.util.UUID;
 
-public class User {
+public class User implements beryloctopus.User {
     //The user's UUID
-    private UUID uuid;
-    //The most recent bio for the user
-    private String bio;
+    private PublicKey pubKey;
     //The most recent name for the user
     private String name;
     //The most recent avatar URL for the user
@@ -20,30 +19,69 @@ public class User {
     //The last one is the most recent.
     private List<UserPost> userRevisions;
 
-    public User(UUID uuid, List<UserPost> userRevisions) {
-        this.uuid = uuid;
-        this.userRevisions = userRevisions;
-        for (UserPost userPost : userRevisions) {
-            applyUserPostData(userPost);
-        }
+
+    /*
+
+    //some old code from another project which may be useful later
+    
+    public static final int IDENTITY_LENGTH = 91; 
+    public static final PublicIdentity ANY = new PublicIdentity((PublicKey) null);
+
+    protected PublicKey pub;
+    private byte[] pubEncoded;
+
+    protected final void init(PublicKey pubkey) {
+        this.pub = pubkey;
+        if (pubkey != null) {
+            pubEncoded = this.pub.getEncoded();
+        } else {
+            pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();
+        }   
+    }   
+
+    protected PublicIdentity() {
+        pub = null;
+        pubEncoded = null;
+    }   
+
+    public PublicIdentity(PublicKey pubkey) {
+        init(pubkey);
+    }   
+
+    public PublicIdentity(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (isPubkeyEmpty(pubkey)) {
+            init(null);
+        } else {
+            KeyFactory keyFactory = KeyFactory.getInstance(AlgorithmFactory.getKeypairAlgorithm());
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubkey);
+            PublicKey pubK = keyFactory.generatePublic(keySpec);
+            init(pubK);
+        }   
+    }   
+    
+    */
+
+    private String pubkeyToUsername(byte[] pubkey) {
+        return (new String(pubkey));
+        //TODO: return hash of public key
     }
 
-    private void applyUserPostData(UserPost post) {
-        if (post.getBio() != null) {
-            bio = post.getBio();
-        }
-        if (post.getName() != null) {
-            name = post.getName();
-        }
-        if (post.getAvatarUrl() != null) {
-            avatarUrl = post.getAvatarUrl();
-        }
-        if (post.getPublicKey() != null) {
-            wallet = new Wallet(post.getPublicKey());
-        }
+    public User(byte[] pubkey) {
+        this.name = pubkeyToUsername(pubkey);
     }
-    
+
+    @Override
     public String getUsername() {
         return name;
+    }
+
+    @Override
+    public PublicKey getPublicKey() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean verifyMessage(byte[] message, byte[] signature) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

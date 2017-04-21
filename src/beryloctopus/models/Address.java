@@ -1,11 +1,12 @@
 package beryloctopus.models;
 
-import beryloctopus.models.posts.Post;
+import beryloctopus.Path;
+import beryloctopus.Post;
 import beryloctopus.repositories.PostRepository;
 
 import java.util.*;
 
-public class Address {
+public class Address implements Path {
     //The part of the address after the last /
     private String lastSegment;
     //The full path of the address
@@ -22,28 +23,31 @@ public class Address {
 
     public Address(String fullPath, PostRepository postRepository) {
         fullPath = fullPath.replace("//", "/");
-        if (fullPath.lastIndexOf("/") == fullPath.length() - 1) {
-            fullPath = fullPath.substring(0, fullPath.length() - 1);
+        if (fullPath.charAt(fullPath.length() - 1) != '/') {
+            //fullPath = fullPath.substring(0, fullPath.length() - 1);
+            fullPath = fullPath + "/";
         }
         this.fullPath = fullPath;
-        this.children = (Set<Post>) postRepository.getChildrenPostsByAddress(fullPath);
-        List<String> allSegments = new ArrayList<String>(Arrays.asList(fullPath.split("/")));
+        this.children = postRepository.getChildrenPostsByAddress(fullPath);
+        List<String> allSegments = new ArrayList<>(Arrays.asList(fullPath.substring(0, fullPath.length() - 1).split("/")));
         lastSegment = allSegments.remove(allSegments.size() - 1);
+        /*
         if (fullPath.indexOf("user:") == 0) {
             topLevelSegment = "user:";
             this.post = null;
         } else {
+*/
             topLevelSegment = "";
             this.post = postRepository.getPostByAddress(fullPath);
-        }
+//        }
+        parents = new ArrayList<>();
         if (allSegments.size() > 1) {
             String newFullPath = topLevelSegment + "/" + String.join("/", allSegments);
             Address directParent = new Address(newFullPath, postRepository);
-            parents = new ArrayList<>();
             parents.add(directParent);
             parents.addAll(directParent.parents);
-        } else {
-            parents = new ArrayList<>();
+//        } else {
+//            parents = new ArrayList<>();
         }
     }
 
@@ -55,12 +59,32 @@ public class Address {
         return lastSegment;
     }
 
-    public Set<Post> getChildren() {
+    public Set<? extends Post> getChildren() {
         return children;
     }
 
     @Override
     public String toString() {
         return fullPath;
+    }
+
+    @Override
+    public String getFullPath() {
+        return (fullPath);
+    }
+
+    @Override
+    public String getParent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Path getParentPath() {
+        return (parents.size() > 0 ? parents.get(0) : null);
+    }
+
+    @Override
+    public beryloctopus.Post getPost() {
+        return post;
     }
 }
