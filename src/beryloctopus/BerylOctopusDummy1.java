@@ -44,7 +44,7 @@ public class BerylOctopusDummy1 implements BerylOctopus {
                             
         postRepository.addPost(new TextPost("/", "hello", curUser, "This is the hello group", System.currentTimeMillis(), postRepository, userRepository));
         postRepository.addPost(new TextPost("/hello", "world", curUser, "This is the world. Deal with it", System.currentTimeMillis(), postRepository, userRepository));
-        postRepository.addPost(new TextPost("/hello/world", "existing post", curUser, "This an example of a post which already exists in the system", System.currentTimeMillis(), postRepository, userRepository));
+        postRepository.addPost(new TextPost("/hello/world", "existing post", curUser, "This an example of a post which already exists in the system with text that gets rediculously long and then it should push off the end of the world", System.currentTimeMillis(), postRepository, userRepository));
         this.curPath = new Address("/hello/world/", postRepository);
 
     }
