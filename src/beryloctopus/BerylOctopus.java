@@ -16,6 +16,11 @@
  */
 package beryloctopus;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  *
  * @author Tootoot222
@@ -58,4 +63,19 @@ public interface BerylOctopus {
     public Post createPost(String fullPath, String title, byte[] content, String contentType, User author);
 
     public void tipPost(Post post, long amount);
+
+    public UserIdentity createUserIdentity(PublicKey pubkey, PrivateKey privkey);
+
+    public UserIdentity createUserIdentity(byte[] pubkey, byte[] privkey) throws InvalidKeySpecException, NoSuchAlgorithmException;
+
+    /**
+     * Gets value held at current address
+     * @param holder
+     * @return 
+     */
+    public long getValueLocal(ValueHolder holder);
+    public long getValueLocal(ValueHolder holder, Path path);
+    public long getValueLocal(ValueHolder holder, String fullPath);
+
+    public long getValueGlobal(ValueHolder holder);
 }

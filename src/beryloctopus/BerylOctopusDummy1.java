@@ -16,11 +16,14 @@
  */
 package beryloctopus;
 
-import beryloctopus.models.Address;
+import beryloctopus.lib.Debug;
 import beryloctopus.models.posts.TextPost;
-import beryloctopus.Post;
 import beryloctopus.repositories.PostRepository;
 import beryloctopus.repositories.UserRepository;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.regex.Pattern;
 
 /**
@@ -35,17 +38,20 @@ public class BerylOctopusDummy1 implements BerylOctopus {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
-    private User curUser;
+    private UserIdentity curUser;
 
-    public BerylOctopusDummy1() {
-        this.curUser = new beryloctopus.models.User("123SampleUsername".getBytes());
+    public BerylOctopusDummy1() throws NoSuchAlgorithmException {
+        this.curUser = new beryloctopus.models.UserIdentity();
         postRepository = new PostRepository();
+        Debug.debug("creating /");
         postRepository.addPost(new TextPost("", "", curUser, "This is the root", System.currentTimeMillis(), postRepository, userRepository));
-                            
+        Debug.debug("creating /hello/");
         postRepository.addPost(new TextPost("/", "hello", curUser, "This is the hello group", System.currentTimeMillis(), postRepository, userRepository));
+        Debug.debug("creating /hello/world/");
         postRepository.addPost(new TextPost("/hello", "world", curUser, "This is the world. Deal with it", System.currentTimeMillis(), postRepository, userRepository));
+        Debug.debug("creating /hello/world/existing post");
         postRepository.addPost(new TextPost("/hello/world", "existing post", curUser, "This an example of a post which already exists in the system with text that gets rediculously long and then it should push off the end of the world", System.currentTimeMillis(), postRepository, userRepository));
-        this.curPath = new Address("/hello/world/", postRepository);
+        this.curPath = new beryloctopus.models.Path("/hello/world/", postRepository);
 
     }
 
@@ -55,7 +61,7 @@ public class BerylOctopusDummy1 implements BerylOctopus {
             newPath = newPath + pathSeparator;
         }
         //TODO: sanitize path
-        this.curPath = new Address(newPath, postRepository);
+        this.curPath = new beryloctopus.models.Path(newPath, postRepository);
         return (getCurrentPath());
     }
 
@@ -85,7 +91,7 @@ public class BerylOctopusDummy1 implements BerylOctopus {
     }
 
     @Override
-    public Post createPost(Path path, String title, byte[] content, String contentType, User author) {
+    public Post createPost(beryloctopus.Path path, String title, byte[] content, String contentType, User author) {
         return (createPost(path.getFullPath(), title, content, contentType, author));
     }
 
@@ -97,5 +103,36 @@ public class BerylOctopusDummy1 implements BerylOctopus {
     @Override
     public void tipPost(Post post, long amount) {
         post.addValue(amount);
+    }
+
+    @Override
+    public UserIdentity createUserIdentity(PublicKey pubkey, PrivateKey privkey) {
+        return (new beryloctopus.models.UserIdentity(pubkey, privkey));
+    }
+
+    @Override
+    public UserIdentity createUserIdentity(byte[] pubkey, byte[] privkey) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        return (new beryloctopus.models.UserIdentity(pubkey, privkey));
+    }
+
+    @Override
+    public long getValueLocal(ValueHolder holder) {
+        return (123);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public long getValueLocal(ValueHolder holder, Path path) {
+        return (432);
+    }
+
+    @Override
+    public long getValueLocal(ValueHolder holder, String fullPath) {
+        return (543);
+    }
+
+    @Override
+    public long getValueGlobal(ValueHolder holder) {
+        return (getValueLocal(holder, "/"));
     }
 }

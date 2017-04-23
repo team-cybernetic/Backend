@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Tootoot222
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,26 +16,10 @@
  */
 package beryloctopus;
 
-import java.util.Set;
-
 /**
  *
  * @author Tootoot222
  */
-public interface Post extends Destination {
-    public String getTitle();
-    public String[] getTags();
-    public byte[] getContent();
-    public String getContentType();
-    public Path getPath();
-    public User getAuthor();
-    public long getValue();
-    public long getByteSize();
-    public long getTimestampMillis();
-    public Set<Post> getSubposts();
-    public Ruleset getRuleset();
-    public Post getParent();
-    public Path getParentPath();
-    public String getParentFullPath();
-    void addValue(long amount);
+public interface ValueHolder {
+    public long getBalance();
 }

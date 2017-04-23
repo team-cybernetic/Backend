@@ -16,26 +16,14 @@
  */
 package beryloctopus;
 
-import java.util.Set;
+import java.security.PrivateKey;
 
 /**
  *
  * @author Tootoot222
  */
-public interface Post extends Destination {
-    public String getTitle();
-    public String[] getTags();
-    public byte[] getContent();
-    public String getContentType();
-    public Path getPath();
-    public User getAuthor();
-    public long getValue();
-    public long getByteSize();
-    public long getTimestampMillis();
-    public Set<Post> getSubposts();
-    public Ruleset getRuleset();
-    public Post getParent();
-    public Path getParentPath();
-    public String getParentFullPath();
-    void addValue(long amount);
+public interface PrivateIdentity extends PublicIdentity {
+    public PrivateKey getPrivateKey();
+    public byte[] getPrivateKeyEncoded();
+    public byte[] signMessage(byte[] message);
 }

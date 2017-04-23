@@ -16,26 +16,14 @@
  */
 package beryloctopus;
 
-import java.util.Set;
+import beryloctopus.exceptions.InsufficientFundsException;
+import beryloctopus.exceptions.NoSuchAddressException;
 
 /**
  *
  * @author Tootoot222
  */
-public interface Post extends Destination {
-    public String getTitle();
-    public String[] getTags();
-    public byte[] getContent();
-    public String getContentType();
-    public Path getPath();
-    public User getAuthor();
-    public long getValue();
-    public long getByteSize();
-    public long getTimestampMillis();
-    public Set<Post> getSubposts();
-    public Ruleset getRuleset();
-    public Post getParent();
-    public Path getParentPath();
-    public String getParentFullPath();
-    void addValue(long amount);
+public interface ValueSender extends ValueHolder {
+    public void sendValue(Destination dest, long amount) throws InsufficientFundsException;
+    public void sendValue(Address source, Destination dest, long amount) throws InsufficientFundsException, NoSuchAddressException;
 }

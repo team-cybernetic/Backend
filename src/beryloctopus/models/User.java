@@ -1,73 +1,88 @@
+/* 
+ * Copyright (C) 2017 Tootoot222
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package beryloctopus.models;
 
-import beryloctopus.models.posts.UserPost;
+import beryloctopus.lib.crypto.factory.CryptoAlgorithmFactory;
+import java.nio.ByteBuffer;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
-import java.util.List;
-import java.util.UUID;
 
 public class User implements beryloctopus.User {
     //The user's UUID
-    private PublicKey pubKey;
+    protected PublicKey pubkey;
     //The most recent name for the user
-    private String name;
-    //The most recent avatar URL for the user
-    private String avatarUrl;
-    //The wallet associated with the user
-    private Wallet wallet;
-    //List of UserPosts that represent revisions to the User overtime.
-    //The last one is the most recent.
-    private List<UserPost> userRevisions;
+    protected String name;
+     //The wallet associated with the user
+    protected Wallet wallet;
 
-
-    /*
-
-    //some old code from another project which may be useful later
-    
     public static final int IDENTITY_LENGTH = 91; 
-    public static final PublicIdentity ANY = new PublicIdentity((PublicKey) null);
+    public static final User ANY = new User((PublicKey) null);
 
-    protected PublicKey pub;
     private byte[] pubEncoded;
 
     protected final void init(PublicKey pubkey) {
-        this.pub = pubkey;
+        this.pubkey = pubkey;
         if (pubkey != null) {
-            pubEncoded = this.pub.getEncoded();
+            this.pubEncoded = pubkey.getEncoded();
+            this.name = pubkeyToUsername(pubEncoded);
         } else {
-            pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();
+            this.pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();;
+            this.name = "<ANY>";
         }   
-    }   
+    }
 
-    protected PublicIdentity() {
-        pub = null;
-        pubEncoded = null;
-    }   
-
-    public PublicIdentity(PublicKey pubkey) {
-        init(pubkey);
-    }   
-
-    public PublicIdentity(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    protected void init(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (isPubkeyEmpty(pubkey)) {
-            init(null);
+            init((PublicKey)null);
         } else {
-            KeyFactory keyFactory = KeyFactory.getInstance(AlgorithmFactory.getKeypairAlgorithm());
+            KeyFactory keyFactory = KeyFactory.getInstance(CryptoAlgorithmFactory.getKeypairAlgorithm());
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubkey);
             PublicKey pubK = keyFactory.generatePublic(keySpec);
             init(pubK);
         }   
-    }   
-    
-    */
-
-    private String pubkeyToUsername(byte[] pubkey) {
-        return (new String(pubkey));
-        //TODO: return hash of public key
     }
 
-    public User(byte[] pubkey) {
-        this.name = pubkeyToUsername(pubkey);
+    protected User() {
+        this.pubkey = null;
+        this.pubEncoded = null;
+        this.wallet = null;
+        this.name = "<unset>";
+    }   
+
+    public User(PublicKey pubkey) {
+        init(pubkey);
+    }   
+
+    public User(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        init(pubkey);
+    }   
+    
+    public static boolean isPubkeyEmpty(byte[] pubkey) {
+        return (pubkey == null || Arrays.equals(new byte[IDENTITY_LENGTH], pubkey));
+    }
+
+    protected String pubkeyToUsername(byte[] pubkey) {
+        return (new String(pubkey));
+        //TODO: return hash of public key
     }
 
     @Override
@@ -77,11 +92,21 @@ public class User implements beryloctopus.User {
 
     @Override
     public PublicKey getPublicKey() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return (pubkey);
+    }
+
+    @Override
+    public byte[] getPublicKeyEncoded() {
+        return (pubEncoded);
     }
 
     @Override
     public boolean verifyMessage(byte[] message, byte[] signature) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getFullPath() {
+        return (getUsername() + "/");
     }
 }
