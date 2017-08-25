@@ -50,6 +50,7 @@ public class UserIdentity extends User implements beryloctopus.UserIdentity {
             //TODO: throw exception? it doesn't really make sense for a UserIdentity to exist but not have a private key
             throw (new NullPointerException("NULL private key passed to UserIdentity!"));
         }
+        this.wallet = new beryloctopus.models.WalletIdentity();
     }
 
     protected final void init(byte[] privkey) throws NoSuchAlgorithmException, InvalidKeySpecException {

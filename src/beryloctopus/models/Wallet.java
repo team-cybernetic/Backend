@@ -29,12 +29,12 @@ public class Wallet implements beryloctopus.Wallet {
     }
 
     public Wallet(Set<beryloctopus.Address> addresses) {
+        this.balance = 0;
         if (addresses != null) {
             this.addresses.addAll(addresses);
-        }
-        this.balance = 0;
-        for (beryloctopus.Address addr : addresses) {
-            this.balance += addr.getBalance();
+            for (beryloctopus.Address addr : addresses) {
+                this.balance += addr.getBalance();
+            }
         }
     }
 

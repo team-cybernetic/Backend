@@ -16,11 +16,16 @@
  */
 package beryloctopus.models;
 
+import beryloctopus.lib.AlphaNumeric64;
 import beryloctopus.lib.crypto.factory.CryptoAlgorithmFactory;
 import java.nio.ByteBuffer;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.interfaces.ECKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
@@ -43,7 +48,7 @@ public class User implements beryloctopus.User {
         this.pubkey = pubkey;
         if (pubkey != null) {
             this.pubEncoded = pubkey.getEncoded();
-            this.name = pubkeyToUsername(pubEncoded);
+            this.name = pubkeyToUsername(pubkey);
         } else {
             this.pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();;
             this.name = "<ANY>";
@@ -80,9 +85,10 @@ public class User implements beryloctopus.User {
         return (pubkey == null || Arrays.equals(new byte[IDENTITY_LENGTH], pubkey));
     }
 
-    protected String pubkeyToUsername(byte[] pubkey) {
-        return (new String(pubkey));
-        //TODO: return hash of public key
+    protected String pubkeyToUsername(PublicKey pubkey) {
+        ECPublicKey ecpub = (ECPublicKey)pubkey;
+        ECPoint w = ecpub.getW();
+        return (AlphaNumeric64.toAlphaNumeric64(w.getAffineX().toByteArray()));
     }
 
     @Override

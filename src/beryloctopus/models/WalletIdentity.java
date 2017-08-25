@@ -38,10 +38,9 @@ public class WalletIdentity extends Wallet implements beryloctopus.WalletIdentit
         super();
         if (addresses != null) {
             this.addresses.addAll(addresses);
-        }
-        this.balance = 0;
-        for (beryloctopus.AddressIdentity addr : addresses) {
-            this.balance += addr.getBalance();
+            for (beryloctopus.AddressIdentity addr : addresses) {
+                this.balance += addr.getBalance();
+            }
         }
     }
 
