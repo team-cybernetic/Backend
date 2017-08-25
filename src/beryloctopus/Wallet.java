@@ -19,23 +19,11 @@ package beryloctopus;
 import java.util.Set;
 
 /**
- *
+ * A wallet is a collection of addresses -- may or may not have the AddressIdenties
+ * I.E. if this is the wallet of a user we don't have the private keys for (remote user)
  * @author Tootoot222
  */
-public interface Post extends Destination {
-    public String getTitle();
-    public String[] getTags();
-    public byte[] getContent();
-    public String getContentType();
-    public Path getPath();
-    public User getAuthor();
-    public long getValue();
-    public long getByteSize();
-    public long getTimestampMillis();
-    public Set<Post> getSubposts();
-    public Ruleset getRuleset();
-    public Post getParent();
-    public Path getParentPath();
-    public String getParentFullPath();
-    void addValue(long amount);
+public interface Wallet extends ValueHolder {
+    public Set<Address> getAllAddresses();
+    public void addAddress(Address address);
 }

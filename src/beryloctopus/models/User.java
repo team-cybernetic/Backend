@@ -1,45 +1,118 @@
+/* 
+ * Copyright (C) 2017 Tootoot222
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package beryloctopus.models;
 
-import beryloctopus.models.posts.UserPost;
+import beryloctopus.lib.AlphaNumeric64;
+import beryloctopus.lib.crypto.factory.CryptoAlgorithmFactory;
+import java.nio.ByteBuffer;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.interfaces.ECKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
-import java.util.List;
-import java.util.UUID;
 
-public class User {
+public class User implements beryloctopus.User {
     //The user's UUID
-    private UUID uuid;
-    //The most recent bio for the user
-    private String bio;
+    protected PublicKey pubkey;
     //The most recent name for the user
-    private String name;
-    //The most recent avatar URL for the user
-    private String avatarUrl;
-    //The wallet associated with the user
-    private Wallet wallet;
-    //List of UserPosts that represent revisions to the User overtime.
-    //The last one is the most recent.
-    private List<UserPost> userRevisions;
+    protected String name;
+     //The wallet associated with the user
+    protected Wallet wallet;
 
-    public User(UUID uuid, List<UserPost> userRevisions) {
-        this.uuid = uuid;
-        this.userRevisions = userRevisions;
-        for (UserPost userPost : userRevisions) {
-            applyUserPostData(userPost);
-        }
+    public static final int IDENTITY_LENGTH = 91; 
+    public static final User ANY = new User((PublicKey) null);
+
+    private byte[] pubEncoded;
+
+    protected final void init(PublicKey pubkey) {
+        this.pubkey = pubkey;
+        if (pubkey != null) {
+            this.pubEncoded = pubkey.getEncoded();
+            this.name = pubkeyToUsername(pubkey);
+        } else {
+            this.pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();;
+            this.name = "<ANY>";
+        }   
     }
 
-    private void applyUserPostData(UserPost post) {
-        if (post.getBio() != null) {
-            bio = post.getBio();
-        }
-        if (post.getName() != null) {
-            name = post.getName();
-        }
-        if (post.getAvatarUrl() != null) {
-            avatarUrl = post.getAvatarUrl();
-        }
-        if (post.getPublicKey() != null) {
-            wallet = new Wallet(post.getPublicKey());
-        }
+    protected void init(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (isPubkeyEmpty(pubkey)) {
+            init((PublicKey)null);
+        } else {
+            KeyFactory keyFactory = KeyFactory.getInstance(CryptoAlgorithmFactory.getKeypairAlgorithm());
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubkey);
+            PublicKey pubK = keyFactory.generatePublic(keySpec);
+            init(pubK);
+        }   
+    }
+
+    protected User() {
+        this.pubkey = null;
+        this.pubEncoded = null;
+        this.wallet = null;
+        this.name = "<unset>";
+    }   
+
+    public User(PublicKey pubkey) {
+        init(pubkey);
+    }   
+
+    public User(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        init(pubkey);
+    }   
+    
+    public static boolean isPubkeyEmpty(byte[] pubkey) {
+        return (pubkey == null || Arrays.equals(new byte[IDENTITY_LENGTH], pubkey));
+    }
+
+    protected String pubkeyToUsername(PublicKey pubkey) {
+        ECPublicKey ecpub = (ECPublicKey)pubkey;
+        ECPoint w = ecpub.getW();
+        return (AlphaNumeric64.toAlphaNumeric64(w.getAffineX().toByteArray()));
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public PublicKey getPublicKey() {
+        return (pubkey);
+    }
+
+    @Override
+    public byte[] getPublicKeyEncoded() {
+        return (pubEncoded);
+    }
+
+    @Override
+    public boolean verifyMessage(byte[] message, byte[] signature) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getFullPath() {
+        return (getUsername() + "/");
     }
 }
