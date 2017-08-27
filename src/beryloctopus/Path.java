@@ -17,14 +17,18 @@
 package beryloctopus;
 
 /**
- *
  * @author Tootoot222
  */
 public interface Path {
-    public String getFullPath();
-    public String getFirstSegment();
-    public String getLastSegment();
-    public String getParentFullPath();
-    public Path getParentPath();
-    public Post getPost();
+    String getFullPath();
+
+    String getFirstSegment();
+
+    String getLastSegment();
+
+    String getParentFullPath();
+
+    Path getParentPath();
+
+    Post getPost();
 }

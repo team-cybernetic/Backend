@@ -37,7 +37,7 @@ public class PostRepository {
 
     private void printAll() {
         Debug.debug("This PostRepository contains:");
-        for(Map.Entry<String, Post> post : addressPostMap.entrySet()) {
+        for (Map.Entry<String, Post> post : addressPostMap.entrySet()) {
             Debug.debug("  \"%s\": %s", post.getKey(), post.getValue());
         }
     }
@@ -53,7 +53,7 @@ public class PostRepository {
     }
 
     public void addPost(beryloctopus.models.posts.Post p) {
-        addPost((Post)p); //not sure why this method is needed at all
+        addPost((Post) p); //not sure why this method is needed at all
         //addressPostMap.put(p.getPath().getFullPath(), p);
     }
 
@@ -66,7 +66,7 @@ public class PostRepository {
             fullPath = fullPath + "/";
         }
         //Return a set of all posts with addresses 1 segment past fullPath
-        for(Map.Entry<String, Post> post : addressPostMap.entrySet()) {
+        for (Map.Entry<String, Post> post : addressPostMap.entrySet()) {
             String key = post.getKey(); //relies on the key ending with a /
             if (key == null || key.length() == 0) {
                 continue;

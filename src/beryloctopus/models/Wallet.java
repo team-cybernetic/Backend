@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Wallet implements beryloctopus.Wallet {
-    private Set<beryloctopus.Address> addresses = new HashSet<>();
     protected long balance;
+    private Set<beryloctopus.Address> addresses = new HashSet<>();
 
     public Wallet() {
         this(null);

@@ -22,18 +22,12 @@ import beryloctopus.WalletIdentity;
 import beryloctopus.exceptions.InsufficientFundsException;
 import beryloctopus.exceptions.NoSuchAddressException;
 import beryloctopus.lib.crypto.factory.CryptoAlgorithmFactory;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
 /**
- *
  * @author Tootoot222
  */
 public class UserIdentity extends User implements beryloctopus.UserIdentity {
@@ -41,28 +35,6 @@ public class UserIdentity extends User implements beryloctopus.UserIdentity {
     private WalletIdentity wallet;
     private PrivateKey privkey;
     private byte[] privEncoded;
-
-    protected final void init(PrivateKey privkey) {
-        this.privkey = privkey;
-        if (privkey != null) {
-            this.privEncoded = privkey.getEncoded();
-        } else {
-            //TODO: throw exception? it doesn't really make sense for a UserIdentity to exist but not have a private key
-            throw (new NullPointerException("NULL private key passed to UserIdentity!"));
-        }
-        this.wallet = new beryloctopus.models.WalletIdentity();
-    }
-
-    protected final void init(byte[] privkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (privkey == null) {
-            init((PrivateKey)null);
-        } else {
-            KeyFactory keyFactory = KeyFactory.getInstance(CryptoAlgorithmFactory.getKeypairAlgorithm());
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privkey);
-            PrivateKey privK = keyFactory.generatePrivate(keySpec);
-            init(privK);
-        }   
-    }
 
     public UserIdentity(PublicKey pubkey, PrivateKey privkey) {
         super(pubkey);
@@ -79,11 +51,33 @@ public class UserIdentity extends User implements beryloctopus.UserIdentity {
         super.init(pair.getPublic());
         this.init(pair.getPrivate());
     }
-    
+
     public UserIdentity(byte[] pubkey, byte[] privkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         super(pubkey);
         init(privkey);
-   }
+    }
+
+    protected final void init(PrivateKey privkey) {
+        this.privkey = privkey;
+        if (privkey != null) {
+            this.privEncoded = privkey.getEncoded();
+        } else {
+            //TODO: throw exception? it doesn't really make sense for a UserIdentity to exist but not have a private key
+            throw (new NullPointerException("NULL private key passed to UserIdentity!"));
+        }
+        this.wallet = new beryloctopus.models.WalletIdentity();
+    }
+
+    protected final void init(byte[] privkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (privkey == null) {
+            init((PrivateKey) null);
+        } else {
+            KeyFactory keyFactory = KeyFactory.getInstance(CryptoAlgorithmFactory.getKeypairAlgorithm());
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privkey);
+            PrivateKey privK = keyFactory.generatePrivate(keySpec);
+            init(privK);
+        }
+    }
 
     @Override
     public PrivateKey getPrivateKey() {

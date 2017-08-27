@@ -21,9 +21,11 @@ import java.util.Set;
 /**
  * A wallet is a collection of addresses -- may or may not have the AddressIdenties
  * I.E. if this is the wallet of a user we don't have the private keys for (remote user)
+ *
  * @author Tootoot222
  */
 public interface Wallet extends ValueHolder {
-    public Set<Address> getAllAddresses();
-    public void addAddress(Address address);
+    Set<Address> getAllAddresses();
+
+    void addAddress(Address address);
 }

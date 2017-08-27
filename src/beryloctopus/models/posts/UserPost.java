@@ -16,7 +16,6 @@
  */
 package beryloctopus.models.posts;
 
-import beryloctopus.Ruleset;
 import beryloctopus.User;
 import beryloctopus.repositories.PostRepository;
 import beryloctopus.repositories.UserRepository;

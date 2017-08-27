@@ -17,7 +17,6 @@
 package beryloctopus.lib.crypto.factory;
 
 /**
- *
  * @author Tootoot222
  */
 public class CryptoAlgorithmFactory {
@@ -29,7 +28,7 @@ public class CryptoAlgorithmFactory {
     public static String getKeypairAlgorithm() {
         return (DEFAULT_KEYPAIR_ALGORITHM);
     }
-    
+
     public static int getKeypairAlgorithmBits() {
         return (DEFAULT_KEYPAIR_ALGORITHM_BITS);
     }

@@ -19,14 +19,13 @@ package beryloctopus;
 import java.util.Set;
 
 /**
- *
  * @author Tootoot222
  */
 public interface WalletIdentity extends Wallet, ValueSender {
-    public Set<AddressIdentity> getAllAddressIdentities();
+    Set<AddressIdentity> getAllAddressIdentities();
 
     @Deprecated
-    public void addAddress(Address address);
+    void addAddress(Address address);
 
-    public void addAddress(AddressIdentity address);
+    void addAddress(AddressIdentity address);
 }

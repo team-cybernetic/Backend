@@ -20,11 +20,9 @@ import beryloctopus.exceptions.InsufficientFundsException;
 import beryloctopus.exceptions.NoSuchAddressException;
 
 /**
- *
  * @author Tootoot222
  */
 public interface AddressIdentity extends Address, PrivateIdentity, ValueSender {
     @Deprecated
-    public void sendValue(Address source, Destination dest, long amount) throws InsufficientFundsException, NoSuchAddressException;
-    
+    void sendValue(Address source, Destination dest, long amount) throws InsufficientFundsException, NoSuchAddressException;
 }

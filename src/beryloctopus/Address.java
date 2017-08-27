@@ -16,13 +16,11 @@
  */
 package beryloctopus;
 
-import java.security.PublicKey;
-
 /**
- *
  * @author Tootoot222
  */
 public interface Address extends PublicIdentity {
-    public String getAddress();
-    public long getBalance();
+    String getAddress();
+
+    long getBalance();
 }

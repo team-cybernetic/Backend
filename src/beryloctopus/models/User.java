@@ -18,13 +18,12 @@ package beryloctopus.models;
 
 import beryloctopus.lib.AlphaNumeric64;
 import beryloctopus.lib.crypto.factory.CryptoAlgorithmFactory;
+
 import java.nio.ByteBuffer;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.interfaces.ECKey;
 import java.security.interfaces.ECPublicKey;
-import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -32,17 +31,34 @@ import java.util.Arrays;
 
 
 public class User implements beryloctopus.User {
+    public static final int IDENTITY_LENGTH = 91;
+    public static final User ANY = new User((PublicKey) null);
     //The user's UUID
     protected PublicKey pubkey;
     //The most recent name for the user
     protected String name;
-     //The wallet associated with the user
+    //The wallet associated with the user
     protected Wallet wallet;
-
-    public static final int IDENTITY_LENGTH = 91; 
-    public static final User ANY = new User((PublicKey) null);
-
     private byte[] pubEncoded;
+
+    protected User() {
+        this.pubkey = null;
+        this.pubEncoded = null;
+        this.wallet = null;
+        this.name = "<unset>";
+    }
+
+    public User(PublicKey pubkey) {
+        init(pubkey);
+    }
+
+    public User(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        init(pubkey);
+    }
+
+    public static boolean isPubkeyEmpty(byte[] pubkey) {
+        return (pubkey == null || Arrays.equals(new byte[IDENTITY_LENGTH], pubkey));
+    }
 
     protected final void init(PublicKey pubkey) {
         this.pubkey = pubkey;
@@ -50,43 +66,25 @@ public class User implements beryloctopus.User {
             this.pubEncoded = pubkey.getEncoded();
             this.name = pubkeyToUsername(pubkey);
         } else {
-            this.pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();;
+            this.pubEncoded = ByteBuffer.allocate(IDENTITY_LENGTH).array();
+            ;
             this.name = "<ANY>";
-        }   
+        }
     }
 
     protected void init(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (isPubkeyEmpty(pubkey)) {
-            init((PublicKey)null);
+            init((PublicKey) null);
         } else {
             KeyFactory keyFactory = KeyFactory.getInstance(CryptoAlgorithmFactory.getKeypairAlgorithm());
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubkey);
             PublicKey pubK = keyFactory.generatePublic(keySpec);
             init(pubK);
-        }   
-    }
-
-    protected User() {
-        this.pubkey = null;
-        this.pubEncoded = null;
-        this.wallet = null;
-        this.name = "<unset>";
-    }   
-
-    public User(PublicKey pubkey) {
-        init(pubkey);
-    }   
-
-    public User(byte[] pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        init(pubkey);
-    }   
-    
-    public static boolean isPubkeyEmpty(byte[] pubkey) {
-        return (pubkey == null || Arrays.equals(new byte[IDENTITY_LENGTH], pubkey));
+        }
     }
 
     protected String pubkeyToUsername(PublicKey pubkey) {
-        ECPublicKey ecpub = (ECPublicKey)pubkey;
+        ECPublicKey ecpub = (ECPublicKey) pubkey;
         ECPoint w = ecpub.getW();
         return (AlphaNumeric64.toAlphaNumeric64(w.getAffineX().toByteArray()));
     }

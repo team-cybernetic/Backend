@@ -17,7 +17,6 @@
 package beryloctopus.exceptions;
 
 /**
- *
  * @author Tootoot222
  */
 public class NoSuchAddressException extends Exception {

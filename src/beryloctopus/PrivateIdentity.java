@@ -19,11 +19,12 @@ package beryloctopus;
 import java.security.PrivateKey;
 
 /**
- *
  * @author Tootoot222
  */
 public interface PrivateIdentity extends PublicIdentity {
-    public PrivateKey getPrivateKey();
-    public byte[] getPrivateKeyEncoded();
-    public byte[] signMessage(byte[] message);
+    PrivateKey getPrivateKey();
+
+    byte[] getPrivateKeyEncoded();
+
+    byte[] signMessage(byte[] message);
 }

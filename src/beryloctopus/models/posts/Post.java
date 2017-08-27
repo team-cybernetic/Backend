@@ -18,12 +18,10 @@ package beryloctopus.models.posts;
 
 import beryloctopus.Ruleset;
 import beryloctopus.models.Path;
-import beryloctopus.models.User;
 import beryloctopus.repositories.PostRepository;
 import beryloctopus.repositories.UserRepository;
 
 import java.util.Set;
-import java.util.UUID;
 
 /*
  * Represents a generic post
@@ -48,10 +46,6 @@ public class Post implements beryloctopus.Post {
     protected String contentType;
 
     protected PostRepository postRepository;
-    
-    private static String sanitizeTitle(String title) {
-        return (title == null ? null : title.replace("/", ""));
-    }
 
     public Post(String parentPath, String title, beryloctopus.User author, byte[] rawPostContent, String contentType, long timestamp, PostRepository postRepository, UserRepository userRepository) {
         this.title = title;
@@ -72,6 +66,10 @@ public class Post implements beryloctopus.Post {
 
     public Post(Post parent, String title, beryloctopus.User author, byte[] rawPostContent, String contentType, long timestamp, PostRepository postRepository, UserRepository userRepository) {
         this(parent.getFullPath(), title, author, rawPostContent, contentType, timestamp, postRepository, userRepository);
+    }
+
+    private static String sanitizeTitle(String title) {
+        return (title == null ? null : title.replace("/", ""));
     }
 
     @Override
@@ -109,7 +107,7 @@ public class Post implements beryloctopus.Post {
     public long getTimestampMillis() {
         return timestamp;
     }
-    
+
     @Override
     public byte[] getContent() {
         return (rawPostContent);

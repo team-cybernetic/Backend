@@ -16,12 +16,6 @@
  */
 package beryloctopus.repositories;
 
-import beryloctopus.models.User;
-import beryloctopus.models.posts.UserPost;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class UserRepository {
 
     /*

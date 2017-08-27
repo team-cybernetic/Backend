@@ -19,23 +19,36 @@ package beryloctopus;
 import java.util.Set;
 
 /**
- *
  * @author Tootoot222
  */
 public interface Post extends Destination {
-    public String getTitle();
-    public String[] getTags();
-    public byte[] getContent();
-    public String getContentType();
-    public Path getPath();
-    public User getAuthor();
-    public long getValue();
-    public long getByteSize();
-    public long getTimestampMillis();
-    public Set<Post> getSubposts();
-    public Ruleset getRuleset();
-    public Post getParent();
-    public Path getParentPath();
-    public String getParentFullPath();
+    String getTitle();
+
+    String[] getTags();
+
+    byte[] getContent();
+
+    String getContentType();
+
+    Path getPath();
+
+    User getAuthor();
+
+    long getValue();
+
+    long getByteSize();
+
+    long getTimestampMillis();
+
+    Set<Post> getSubposts();
+
+    Ruleset getRuleset();
+
+    Post getParent();
+
+    Path getParentPath();
+
+    String getParentFullPath();
+
     void addValue(long amount);
 }

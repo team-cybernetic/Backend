@@ -17,9 +17,8 @@
 package beryloctopus;
 
 /**
- *
  * @author Tootoot222
  */
 public interface ValueHolder {
-    public long getBalance();
+    long getBalance();
 }

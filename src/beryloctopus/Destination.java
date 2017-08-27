@@ -17,9 +17,8 @@
 package beryloctopus;
 
 /**
- *
  * @author Tootoot222
  */
 public interface Destination {
-    public String getFullPath();
+    String getFullPath();
 }

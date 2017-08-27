@@ -20,6 +20,7 @@ import beryloctopus.lib.Debug;
 import beryloctopus.models.posts.TextPost;
 import beryloctopus.repositories.PostRepository;
 import beryloctopus.repositories.UserRepository;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -27,7 +28,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author Tootoot222
  */
 public class BerylOctopusDummy1 implements BerylOctopus {
@@ -52,7 +52,6 @@ public class BerylOctopusDummy1 implements BerylOctopus {
         Debug.debug("creating /hello/world/existing post");
         postRepository.addPost(new TextPost("/hello/world", "existing post", curUser, "This an example of a post which already exists in the system with text that gets rediculously long and then it should push off the end of the world", System.currentTimeMillis(), postRepository, userRepository));
         this.curPath = new beryloctopus.models.Path("/hello/world/", postRepository);
-
     }
 
     @Override

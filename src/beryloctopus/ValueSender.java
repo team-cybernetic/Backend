@@ -20,10 +20,10 @@ import beryloctopus.exceptions.InsufficientFundsException;
 import beryloctopus.exceptions.NoSuchAddressException;
 
 /**
- *
  * @author Tootoot222
  */
 public interface ValueSender extends ValueHolder {
-    public void sendValue(Destination dest, long amount) throws InsufficientFundsException;
-    public void sendValue(Address source, Destination dest, long amount) throws InsufficientFundsException, NoSuchAddressException;
+    void sendValue(Destination dest, long amount) throws InsufficientFundsException;
+
+    void sendValue(Address source, Destination dest, long amount) throws InsufficientFundsException, NoSuchAddressException;
 }

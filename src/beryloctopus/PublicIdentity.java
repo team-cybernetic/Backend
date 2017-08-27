@@ -19,11 +19,12 @@ package beryloctopus;
 import java.security.PublicKey;
 
 /**
- *
  * @author Tootoot222
  */
 public interface PublicIdentity {
-    public PublicKey getPublicKey();
-    public byte[] getPublicKeyEncoded();
-    public boolean verifyMessage(byte[] message, byte[] signature);
+    PublicKey getPublicKey();
+
+    byte[] getPublicKeyEncoded();
+
+    boolean verifyMessage(byte[] message, byte[] signature);
 }

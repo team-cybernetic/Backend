@@ -18,12 +18,12 @@ package beryloctopus.models;
 
 import beryloctopus.exceptions.InsufficientFundsException;
 import beryloctopus.exceptions.NoSuchAddressException;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author Tootoot222
  */
 public class WalletIdentity extends Wallet implements beryloctopus.WalletIdentity {

@@ -22,60 +22,66 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 /**
- *
  * @author Tootoot222
  */
 public interface BerylOctopus {
     /**
      * Attempts to navigate into the given path. Similar to the ``cd'' command.
      * Possible exceptions encountered:
-     *      bad path
+     * bad path
+     *
      * @param newPath
      * @return Returns the new current path
      * @throws Exception TODO: make proper exceptions
      */
-    public Path setCurrentPath(String newPath) throws Exception;
+    Path setCurrentPath(String newPath) throws Exception;
 
     /**
      * Gets the current path location
+     *
      * @return The current path location
      */
-    public Path getCurrentPath();
+    Path getCurrentPath();
 
     /**
      * Returns the current path location as an array of subdirectories
+     *
      * @return An array of String, where each element is a subdirectory
      */
-    public String[] getCurrentPathArray();
+    String[] getCurrentPathArray();
 
-    public String getPathSeparator();
+    String getPathSeparator();
 
     /**
      * Gets the post at the current Path
+     *
      * @return The post
      */
-    public Post getCurrentPost();
+    Post getCurrentPost();
 
-    public Post getPostAt(String fullPath);
+    Post getPostAt(String fullPath);
 
-    public Post createPost(Path path, String title, byte[] content, String contentType, User author);
+    Post createPost(Path path, String title, byte[] content, String contentType, User author);
 
-    public Post createPost(String fullPath, String title, byte[] content, String contentType, User author);
+    Post createPost(String fullPath, String title, byte[] content, String contentType, User author);
 
-    public void tipPost(Post post, long amount);
+    void tipPost(Post post, long amount);
 
-    public UserIdentity createUserIdentity(PublicKey pubkey, PrivateKey privkey);
+    UserIdentity createUserIdentity(PublicKey pubkey, PrivateKey privkey);
 
-    public UserIdentity createUserIdentity(byte[] pubkey, byte[] privkey) throws InvalidKeySpecException, NoSuchAlgorithmException;
+    UserIdentity createUserIdentity(byte[] pubkey, byte[] privkey) throws InvalidKeySpecException, NoSuchAlgorithmException;
 
     /**
      * Gets value held at current address
+     *
      * @param holder
-     * @return 
+     * @return
      */
-    public long getValueLocal(ValueHolder holder);
-    public long getValueLocal(ValueHolder holder, Path path);
-    public long getValueLocal(ValueHolder holder, String fullPath);
+    long getValueLocal(ValueHolder holder);
 
-    public long getValueGlobal(ValueHolder holder);
+    long getValueLocal(ValueHolder holder, Path path);
+
+    long getValueLocal(ValueHolder holder, String fullPath);
+
+    long getValueGlobal(ValueHolder holder);
 }

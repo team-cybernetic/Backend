@@ -16,12 +16,9 @@
  */
 package beryloctopus;
 
-import java.security.PublicKey;
-
 /**
- *
  * @author Tootoot222
  */
 public interface User extends Destination, PublicIdentity {
-    public String getUsername();
+    String getUsername();
 }
